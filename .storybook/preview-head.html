@@ -1,0 +1,22 @@
+<script>
+  /*
+  Wait untill window.__APOLLO_CLIENT__ is available: https://github.com/apollographql/apollo-client-devtools
+  Then set it into the parent window.
+  */
+  const hoistClientWindowWhenReady = () => {
+    setTimeout(
+      () => {
+        if (window.__APOLLO_CLIENT__) {
+          console.info('Plugged inner Apollo Client into outer window.')
+          window.parent.__APOLLO_CLIENT__ = window.__APOLLO_CLIENT__
+        } else {
+          console.info('Inner Apollo Client Not Yet available.')
+          hoistClientWindowWhenReady();
+        }
+      },
+      200
+    );
+  }
+  hoistClientWindowWhenReady()
+
+</script>
